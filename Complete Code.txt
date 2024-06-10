@@ -1,0 +1,123 @@
+# Next, we will compare between Movie and TV Show for
+rows, cols = 2, 5
+fig, axes = plt.subplots(rows, cols, figsize=(16, 6))
+# Counter to keep track of subplot position
+counter = 0
+# Loop through each row (country) in the DataFrame
+for country, row in top_10_counts.iterrows():
+# Extract movie, tv show, and total counts
+movie_count = row['Movie']
+tv_show_count = row['TV Show']
+total_count = row['total_by_country']
+# Create labels for pie chart slices
+labels = ['Movie', 'TV Show']
+# Create pie chart slice sizes
+sizes = [movie_count, tv_show_count]
+# Select the current subplot based on counter
+ax = axes[counter // cols, counter % cols]
+# Create a pie chart on the selected subplot
+ax.pie(sizes, labels=labels, autopct="%1.1f%%", expl
+ax.set_title(country)
+# Increase counter for next subplot position
+counter += 1
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans, AffinityPropagatio
+import pandas as pd
+# Read the CSV file
+df = pd.read_csv('netflix_titles.csv', encoding='latin
+# Display the first few rows of the DataFrame
+df.head()
+
+
+df = df[df.columns[:12]]
+df.head()
+
+# Check for missing values
+df.isnull().sum()
+
+# Replacments
+df['country'] = df['country'].fillna(df['country'].mod
+df['cast'].replace(np.nan, 'No Data',inplace = True)
+df['director'].replace(np.nan, 'No Data',inplace = Tr
+# Drops
+df.dropna(inplace=True)
+# Drop Duplicates
+df.drop_duplicates(inplace= True)
+
+# We need to use the strip module first because some v
+df["date_added"] = df["date_added"].str.strip()
+# convert dtype to datetime
+df["date_added"] = pd.to_datetime(df['date_added'])
+# extract month and year
+df['month_added']=df['date_added'].dt.month_name()
+df['year_added'] = df['date_added'].dt.year
+
+df.isnull().sum()
+
+df.info()
+
+# Create our pie chart with labels
+df["type"].value_counts().plot.pie(autopct='%1.2f%%',exp
+
+
+country_counts = df['country'].value_counts().head(10)
+# Create the bar chart
+plt.figure(figsize=(10, 6)) # Adjust figure size as des
+bars = plt.bar(country_counts.index, country_counts.valu
+# Add count values on top of bars
+for bar, count in zip(bars, country_counts.values):
+yval = bar.get_height()
+plt.text(bar.get_x() + bar.get_width() / 2, yval + 0
+# Highlight top 3 countries
+plt.bar(country_counts.index[:3], country_counts.values[
+# Customize the plot
+plt.xlabel('Country')
+plt.ylabel('Count')
+plt.title('Top 10 Countries (Top 3 Highlighted)')
+plt.xticks(rotation=45, ha='right') # Rotate x-axis lab
+plt.tight_layout()
+plt.show()
+
+
+# Count movies and TV shows per country
+movie_counts_country = df[df['type'] == 'Movie']['coun
+tv_show_counts_country = df[df['type'] == 'TV Show']['
+# Combine counts into a single DataFrame with total (u
+df_counts = pd.DataFrame({'Movie': movie_counts_countr
+df_counts['total_by_country'] = df_counts.sum(axis=1)
+# Sort by total count in descending order and select t
+top_10_counts = df_counts.sort_values(by='total_by_cou
+# Print the top 10 countries with movie, TV show, and
+print(top_10_counts)
+
+
+# Next, we will compare between Movie and TV Show for
+rows, cols = 2, 5
+fig, axes = plt.subplots(rows, cols, figsize=(16, 6))
+# Counter to keep track of subplot position
+counter = 0
+# Loop through each row (country) in the DataFrame
+for country, row in top_10_counts.iterrows():
+# Extract movie, tv show, and total counts
+movie_count = row['Movie']
+tv_show_count = row['TV Show']
+total_count = row['total_by_country']
+# Create labels for pie chart slices
+labels = ['Movie', 'TV Show']
+# Create pie chart slice sizes
+sizes = [movie_count, tv_show_count]
+# Select the current subplot based on counter
+ax = axes[counter // cols, counter % cols]
+# Create a pie chart on the selected subplot
+ax.pie(sizes, labels=labels, autopct="%1.1f%%", expl
+ax.set_title(country)
+# Increase counter for next subplot position
+counter += 1
+
+# Adjust layout to prevent overlapping elements
+plt.tight_layout()
+plt.show()
+
+
+
